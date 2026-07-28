@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formula Builder — Rachel Truong</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--bg:#F5F4F1;--bg-subtle:#EEECEA;--bg-inset:#E6E4E0;--border:rgba(0,0,0,0.08);--border-mid:rgba(0,0,0,0.14);--text:#1A1A18;--text-2:#4A4A46;--text-3:#888884;--accent:#4A2D4E;--accent-bg:#F2EAF3;--accent-text:#321D35;--accent-ghost:rgba(74,45,78,0.07);--accent-col:#E8E0EA;--t:background 0.25s ease,color 0.25s ease,border-color 0.25s ease;}
+[data-theme="dark"]{--bg:#141412;--bg-subtle:#1C1C1A;--bg-inset:#242422;--border:rgba(255,255,255,0.07);--border-mid:rgba(255,255,255,0.13);--text:#F0EFEB;--text-2:#A8A8A2;--text-3:#5C5C58;--accent:#9B72A0;--accent-bg:#251629;--accent-text:#D4ADDA;--accent-ghost:rgba(155,114,160,0.1);--accent-col:#1E1420;}
+html{font-size:16px;scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Sora',system-ui,sans-serif;font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased;transition:var(--t);}
+#gate{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;align-items:center;justify-content:center;transition:var(--t);}
+#gate-inner{width:100%;max-width:360px;padding:0 2rem;display:flex;flex-direction:column;gap:1.25rem;}
+#gate-label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);}
+#gate-title{font-size:1.3rem;font-weight:600;letter-spacing:-.02em;color:var(--text);line-height:1.3;}
+#gate-sub{font-size:.825rem;color:var(--text-3);line-height:1.6;}
+#gate-input{width:100%;padding:.75rem 1rem;background:var(--bg-subtle);border:1px solid var(--border-mid);border-radius:6px;font-family:'Sora',sans-serif;font-size:.875rem;color:var(--text);outline:none;transition:border-color .15s;}
+#gate-input:focus{border-color:var(--accent);}
+#gate-input::placeholder{color:var(--text-3);}
+#gate-btn{padding:.75rem 1rem;background:var(--accent);color:#F2EAF3;border:none;border-radius:6px;font-family:'Sora',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.04em;cursor:pointer;transition:opacity .15s;}
+#gate-btn:hover{opacity:.85;}
+#gate-error{font-size:.775rem;color:#8B3A3A;display:none;}
+#gate.hidden{display:none;}
+body.locked{overflow:hidden;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 3rem;height:60px;background:var(--bg);border-bottom:1px solid var(--border);transition:var(--t);}
+.nav-name{font-size:.875rem;font-weight:500;color:var(--text);text-decoration:none;letter-spacing:-.01em;}
+.nav-right{display:flex;align-items:center;gap:1.5rem;}
+.nav-back{font-size:.8rem;color:var(--text-3);text-decoration:none;transition:color .15s;}
+.nav-back:hover{color:var(--text);}
+.theme-toggle{width:36px;height:36px;border:1px solid var(--border-mid);border-radius:6px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-3);transition:var(--t);}
+.theme-toggle:hover{border-color:var(--text-3);color:var(--text);}
+.theme-toggle svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+.icon-moon{display:none;}[data-theme="dark"] .icon-sun{display:none;}[data-theme="dark"] .icon-moon{display:block;}
+.cs-hero{padding:100px 3rem 60px;background:var(--bg-subtle);border-bottom:1px solid var(--border);transition:var(--t);position:relative;overflow:hidden;}
+.cs-hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 340px;gap:5rem;align-items:start;position:relative;z-index:1;}
+.cs-ghost-hero{position:absolute;right:360px;bottom:-20px;font-size:18rem;font-weight:700;color:var(--accent-ghost);line-height:1;letter-spacing:-.05em;pointer-events:none;user-select:none;z-index:0;transition:var(--t);}
+.cs-kicker{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-text);background:var(--accent-bg);display:inline-block;padding:.25rem .6rem;border-radius:3px;margin-bottom:1.5rem;font-weight:500;transition:var(--t);}
+.cs-title{font-size:clamp(2rem,4vw,3.2rem);font-weight:700;letter-spacing:-.03em;line-height:1.05;color:var(--text);margin-bottom:1.25rem;}
+.cs-thesis{font-size:1rem;color:var(--text-2);line-height:1.8;max-width:48ch;}
+.glance{background:var(--bg);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:var(--t);}
+.glance-row{padding:.875rem 1.25rem;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:.2rem;}
+.glance-row:last-child{border-bottom:none;}
+.glance-label{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);}
+.glance-value{font-size:.8rem;color:var(--text-2);font-weight:400;line-height:1.5;}
+.cs-body-wrap{max-width:720px;margin:0 auto;padding:72px 3rem;}
+.cs-sec{margin-bottom:64px;}
+.cs-sec-header{margin-bottom:1.75rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:baseline;gap:1rem;}
+.cs-sec-n{font-size:.7rem;color:var(--accent);letter-spacing:.08em;flex-shrink:0;font-weight:500;}
+.cs-sec-title{font-size:1.2rem;font-weight:600;letter-spacing:-.02em;color:var(--text);line-height:1.3;}
+.cs-sec-sub{font-size:.8rem;color:var(--text-3);margin-top:-1.25rem;margin-bottom:1.5rem;}
+.cs-p{font-size:.9375rem;color:var(--text-2);line-height:1.85;margin-bottom:1.25rem;}
+.cs-p strong{color:var(--text);font-weight:600;}
+.cs-pull{margin:2rem 0;padding:1.25rem 1.5rem;border-left:2px solid var(--accent);background:var(--accent-bg);border-radius:0 4px 4px 0;transition:var(--t);}
+.cs-pull p{font-size:1rem;color:var(--accent-text);line-height:1.7;font-weight:400;font-style:italic;}
+.diagram-box{margin:2rem 0;background:var(--bg-inset);border:1px dashed var(--border-mid);border-radius:6px;padding:3rem 2rem;text-align:center;transition:var(--t);}
+.diagram-box-label{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin-bottom:.4rem;}
+.diagram-box-desc{font-size:.85rem;color:var(--text-3);line-height:1.6;}
+.scope-tbl{width:100%;border-collapse:collapse;margin:1.75rem 0;font-size:.825rem;border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+.scope-tbl th{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);padding:.75rem 1rem;text-align:left;background:var(--bg-subtle);border-bottom:1px solid var(--border);}
+.scope-tbl td{padding:.875rem 1rem;border-bottom:1px solid var(--border);color:var(--text-2);vertical-align:top;line-height:1.6;}
+.scope-tbl td:first-child{font-weight:600;color:var(--text);}
+.scope-tbl tr:last-child td{border-bottom:none;}
+.deferred-list{margin:1.5rem 0;display:flex;flex-direction:column;}
+.deferred-item{display:flex;gap:1rem;padding:1.1rem 0;border-bottom:1px solid var(--border);align-items:flex-start;}
+.deferred-item:first-child{border-top:1px solid var(--border);}
+.deferred-badge{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-text);background:var(--accent-bg);padding:.2rem .5rem;border-radius:3px;flex-shrink:0;margin-top:.2rem;font-weight:500;transition:var(--t);}
+.deferred-text{font-size:.875rem;color:var(--text-2);line-height:1.7;}
+.outcomes-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin:1.5rem 0;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+.outcome-cell{background:var(--bg);padding:1.25rem 1.5rem;}
+.outcome-cell p{font-size:.825rem;color:var(--text-2);line-height:1.7;}
+.outcome-cell strong{color:var(--text);font-weight:600;}
+.cs-next{border-top:1px solid var(--border);padding:60px 3rem;max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:2rem;}
+.cs-next-label{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:.5rem;}
+.cs-next-title{font-size:1.4rem;font-weight:600;letter-spacing:-.02em;color:var(--text);}
+.cs-next-link{font-size:.8rem;color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:.4rem;border:1px solid var(--accent-bg);padding:.6rem 1rem;border-radius:5px;font-weight:500;transition:color .15s,border-color .15s,background .15s;}
+.cs-next-link:hover{background:var(--accent-bg);border-color:var(--accent);}
+.footer-wrap{background:var(--bg);border-top:1px solid var(--border);transition:var(--t);}
+footer{padding:1.5rem 3rem;max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
+footer span{font-size:.75rem;color:var(--text-3);}
+.fade-in{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+@media(max-width:860px){nav{padding:0 1.5rem;}.cs-hero{padding:80px 1.5rem 40px;}.cs-hero-inner{grid-template-columns:1fr;gap:2.5rem;}.cs-ghost-hero{display:none;}.cs-body-wrap{padding:48px 1.5rem;}.outcomes-grid{grid-template-columns:1fr;}.cs-next{flex-direction:column;align-items:flex-start;padding:40px 1.5rem;}footer{padding:1.5rem;}}
+</style>
+</head>
+<body class="locked">
+
+<div id="gate">
+  <div id="gate-inner">
+    <p id="gate-label">Case study 02 · Protected</p>
+    <h1 id="gate-title">Formula Builder</h1>
+    <p id="gate-sub">This case study is password protected.</p>
+    <input id="gate-input" type="password" placeholder="Password" autocomplete="off"/>
+    <button id="gate-btn">Continue →</button>
+    <p id="gate-error">Incorrect password. Please try again.</p>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-name">Rachel Truong</a>
+  <div class="nav-right">
+    <a href="index.html#work" class="nav-back">← Work</a>
+    <button class="theme-toggle" id="themeBtn" aria-label="Toggle theme">
+      <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</nav>
+
+<section class="cs-hero">
+  <div class="cs-ghost-hero">02</div>
+  <div class="cs-hero-inner">
+    <div>
+      <span class="cs-kicker">Case study 02</span>
+      <h1 class="cs-title">Formula<br>Builder</h1>
+      <p class="cs-thesis">Rebuilding a fragile, platform-wide calculation engine to support sophisticated analytics — without breaking everything already depending on it.</p>
+    </div>
+    <div class="glance">
+      <div class="glance-row"><span class="glance-label">Role</span><span class="glance-value">Design Lead</span></div>
+      <div class="glance-row"><span class="glance-label">Platform</span><span class="glance-value">iLEVEL by iCapital</span></div>
+      <div class="glance-row"><span class="glance-label">Thesis</span><span class="glance-value">Legacy Formula Builder couldn't support increasingly complex analytics without creating instability across the platform's calculation layer.</span></div>
+      <div class="glance-row"><span class="glance-label">Strategic context</span><span class="glance-value">Foundational investment for Credit & Benchmark initiatives</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="cs-body-wrap">
+
+  <div class="cs-sec fade-in">
+    <div class="cs-sec-header"><span class="cs-sec-n">01</span><h2 class="cs-sec-title">Framing the problem</h2></div>
+    <p class="cs-p">Formula Builder powers iLEVEL's calculation engine — the layer responsible for portfolio metrics, benchmarking, and financial reporting. As Private Credit strategies expanded across private equity firms, clients increasingly relied on advanced analytics: weighted rollups, CAGR, quartile rankings, standard deviation calculations.</p>
+    <p class="cs-p">Legacy Formula Builder was not designed to handle these dynamic calculations, and extending it further would have made an already fragile system harder to maintain. Many firms relied on professional services just to manage formulas — small changes could unintentionally break downstream calculations across the platform.</p>
+    <div class="cs-pull"><p>Continuing to extend the legacy system would limit the platform's ability to support more sophisticated analytics at exactly the moment clients needed them most.</p></div>
+  </div>
+
+  <div class="cs-sec fade-in">
+    <div class="cs-sec-header"><span class="cs-sec-n">02</span><h2 class="cs-sec-title">Strategic role</h2></div>
+    <p class="cs-p">The need to replace legacy Formula Builder had been recognized internally for years, but scope had repeatedly delayed the effort. The project finally moved forward when a new Head of Product prioritized it as a foundational investment — particularly to support upcoming Credit and Benchmark initiatives.</p>
+    <p class="cs-p">Because Formula Builder touches nearly every part of the platform, the main challenge became scoping the work responsibly. My role focused on identifying where structural improvements were necessary versus where complexity needed to be deferred.</p>
+    <div class="deferred-list">
+      <div class="deferred-item"><span class="deferred-badge">Deferred</span><p class="deferred-text">Advocated deferring a visual formula dependency map — implementing it would have significantly expanded engineering scope — in favor of simpler visibility improvements addressing the same underlying need.</p></div>
+      <div class="deferred-item"><span class="deferred-badge">Deferred</span><p class="deferred-text">Explored consolidating historically-separated data item types, but deferred the architectural change while ensuring the redesigned system could support both models in future.</p></div>
+      <div class="deferred-item"><span class="deferred-badge">Underestimated</span><p class="deferred-text">Initially underestimated how closely Formula Builder should integrate with the platform's Data Trace audit system — partially addressed within scope, flagged as a follow-on priority.</p></div>
+    </div>
+  </div>
+
+  <div class="cs-sec fade-in">
+    <div class="cs-sec-header"><span class="cs-sec-n">03</span><h2 class="cs-sec-title">Schema & governance coupling</h2></div>
+    <p class="cs-sec-sub">Why the system was structurally messy</p>
+    <p class="cs-p">Formula Builder sits on top of iLEVEL's Data Item system, which had historically prioritized flexibility. Over time this created governance challenges: firms accumulated duplicate data items, inconsistent naming conventions, and overlapping configurations.</p>
+    <p class="cs-p">A separate initiative — Data Item Standardisation (DIS) — proposed a layered governance model. Due to scale, DIS was deferred. As a result, the redesigned Formula Builder needed to <strong>function within the existing data item model while remaining compatible with the future DIS architecture.</strong></p>
+  </div>
+
+  <div class="cs-sec fade-in">
+    <div class="cs-sec-header"><span class="cs-sec-n">04</span><h2 class="cs-sec-title">Formula association & priority rules</h2></div>
+    <p class="cs-sec-sub">How formulas are resolved</p>
+    <p class="cs-p">A core challenge was determining how formulas should apply across entities. Legacy iLEVEL used three levels of scope — but in practice the model was both rigid and ambiguous:</p>
+    <table class="scope-tbl">
+      <thead><tr><th>Legacy scope</th><th>Intended meaning</th><th>Problem in practice</th></tr></thead>
+      <tbody>
+        <tr><td>All Assets</td><td>Applied across entire portfolio</td><td>Interpreted as "literal all" or "global default" — both existed in code</td></tr>
+        <tr><td>Static associations</td><td>Applied to specific entities</td><td>Little flexibility between all and specific — no middle ground</td></tr>
+        <tr><td>Dynamic entity groups</td><td>Attribute-defined groups</td><td>Overlapping scopes created conflicts with no resolution mechanism</td></tr>
+      </tbody>
+    </table>
+    <p class="cs-p">The redesign replaced the ambiguous "All Assets" with <strong>Default</strong> and introduced a flexible association structure. We also introduced <strong>Priority Rules</strong> — allowing administrators to explicitly define the order associations are evaluated. This shifted formula resolution from implicit behavior to an explicit, predictable rule system.</p>
+    <div class="diagram-box"><p class="diagram-box-label">Diagram · Association model & Priority Rules</p><p class="diagram-box-desc">Default → Entity Group → Static Entity hierarchy, with Priority Rules resolving overlaps</p></div>
+    <div class="cs-pull"><p>Priority Rules preserved flexibility while eliminating ambiguity — admins could now reason about what would happen rather than discovering it through broken calculations.</p></div>
+  </div>
+
+  <div class="cs-sec fade-in">
+    <div class="cs-sec-header"><span class="cs-sec-n">05</span><h2 class="cs-sec-title">Excel vs. governed logic</h2></div>
+    <p class="cs-sec-sub">How formulas are written</p>
+    <p class="cs-p">Most users expected formula creation to behave like Excel. Legacy Formula Builder did not meet that expectation. The redesigned interface adopted a more familiar formula-building experience while accommodating iLEVEL's more dynamic calculation model — formulas that operate across different entities, scenarios, and time offsets.</p>
+    <p class="cs-p">The redesign aimed to <strong>preserve the familiarity of spreadsheet formula entry while making these additional dimensions more visible and manageable.</strong></p>
+    <div class="diagram-box"><p class="diagram-box-label">Screen · Formula Builder interface</p><p class="diagram-box-desc">WYSIWYG editor with entity scope, time offset, and scenario selectors inline</p></div>
+  </div>
+
+  <div class="cs-sec fade-in">
+    <div class="cs-sec-header"><span class="cs-sec-n">06</span><h2 class="cs-sec-title">Making dependencies legible</h2></div>
+    <p class="cs-sec-sub">How formulas and data items are understood and maintained</p>
+    <p class="cs-p">Users struggled to understand what existed in their environment. Firms accumulated large numbers of data items and formulas with slight naming variations. iLEVEL would warn an item was in use elsewhere but offered little help identifying where — so administrators avoided making changes, allowing configuration debt to accumulate.</p>
+    <p class="cs-p">We deferred the full visual dependency map and instead delivered simpler, higher-leverage visibility improvements:</p>
+    <div class="outcomes-grid">
+      <div class="outcome-cell"><p>A unified page showing all data items in the environment — a capability that didn't previously exist</p></div>
+      <div class="outcome-cell"><p>Searchable tables with formula previews, letting admins quickly locate where calculations were defined</p></div>
+      <div class="outcome-cell"><p>Last-used timestamps, surfacing data items likely redundant or no longer active</p></div>
+      <div class="outcome-cell"><p>A drawer pattern for rapid inspection — replacing cumbersome modal dialogs</p></div>
+    </div>
+  </div>
+
+  <div class="cs-sec fade-in">
+    <div class="cs-sec-header"><span class="cs-sec-n">07</span><h2 class="cs-sec-title">Outcomes</h2></div>
+    <p class="cs-p">Rebuilding Formula Builder stabilized the platform's calculation engine at a time when clients were demanding more sophisticated analytics. The redesigned system supports advanced calculation types while reducing the fragility that previously required professional services to maintain formulas.</p>
+    <div class="cs-pull"><p>Without a stable calculation layer, clients could increasingly rely on external tools — or emerging AI-driven analytics platforms — to manage portfolio calculations outside the system. Strengthening Formula Builder ensured that calculations, data, and auditability remain anchored within iLEVEL.</p></div>
+  </div>
+
+</div>
+
+<div style="border-top:1px solid var(--border);">
+  <div class="cs-next">
+    <div><p class="cs-next-label">Next case study</p><p class="cs-next-title">Peer Comparables</p></div>
+    <a href="peer-comparables.html" class="cs-next-link">View case study →</a>
+  </div>
+</div>
+
+<div class="footer-wrap">
+  <footer>
+    <span>© 2026 Rachel Truong</span>
+    <a href="index.html" style="font-size:.75rem;color:var(--text-3);text-decoration:none;">← Portfolio</a>
+  </footer>
+</div>
+
+<script>
+  const PASS='rachel2026',SK='rt_fb_v3';
+  const gate=document.getElementById('gate'),inp=document.getElementById('gate-input'),gbtn=document.getElementById('gate-btn'),gerr=document.getElementById('gate-error');
+  function unlock(){gate.classList.add('hidden');document.body.classList.remove('locked');sessionStorage.setItem(SK,'1');}
+  if(sessionStorage.getItem(SK))unlock();
+  function attempt(){if(inp.value===PASS){unlock();}else{gerr.style.display='block';inp.value='';inp.focus();}}
+  gbtn.addEventListener('click',attempt);inp.addEventListener('keydown',e=>{if(e.key==='Enter')attempt();});
+  const html=document.documentElement,tb=document.getElementById('themeBtn'),sv=localStorage.getItem('theme');
+  if(sv)html.setAttribute('data-theme',sv);
+  tb.addEventListener('click',()=>{const n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);localStorage.setItem('theme',n);});
+  const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.08});
+  document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

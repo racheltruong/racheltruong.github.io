@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rachel Truong — Product Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:           #F5F4F1;
+  --bg-subtle:    #EEECEA;
+  --bg-inset:     #E6E4E0;
+  --border:       rgba(0,0,0,0.08);
+  --border-mid:   rgba(0,0,0,0.14);
+  --text:         #1A1A18;
+  --text-2:       #4A4A46;
+  --text-3:       #888884;
+  --accent:       #4A2D4E;
+  --accent-mid:   #6B4870;
+  --accent-bg:    #F2EAF3;
+  --accent-text:  #321D35;
+  --accent-ghost: rgba(74,45,78,0.07);
+  --accent-col:   #E8E0EA;
+  --t: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+[data-theme="dark"] {
+  --bg:           #141412;
+  --bg-subtle:    #1C1C1A;
+  --bg-inset:     #242422;
+  --border:       rgba(255,255,255,0.07);
+  --border-mid:   rgba(255,255,255,0.13);
+  --text:         #F0EFEB;
+  --text-2:       #A8A8A2;
+  --text-3:       #5C5C58;
+  --accent:       #9B72A0;
+  --accent-mid:   #B890BC;
+  --accent-bg:    #251629;
+  --accent-text:  #D4ADDA;
+  --accent-ghost: rgba(155,114,160,0.1);
+  --accent-col:   #1E1420;
+}
+
+html { font-size: 16px; scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Sora', system-ui, sans-serif; font-weight: 300; line-height: 1.6; -webkit-font-smoothing: antialiased; transition: var(--t); }
+
+/* NAV */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 3rem; height: 60px; background: var(--bg); border-bottom: 1px solid var(--border); transition: var(--t); }
+.nav-name { font-size: 0.875rem; font-weight: 500; color: var(--text); text-decoration: none; letter-spacing: -0.01em; }
+.nav-right { display: flex; align-items: center; gap: 2rem; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { font-size: 0.8rem; color: var(--text-3); text-decoration: none; letter-spacing: 0.04em; transition: color 0.15s; }
+.nav-links a:hover { color: var(--text); }
+.theme-toggle { width: 36px; height: 36px; border: 1px solid var(--border-mid); border-radius: 6px; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-3); transition: var(--t); flex-shrink: 0; }
+.theme-toggle:hover { border-color: var(--text-3); color: var(--text); }
+.theme-toggle svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.icon-moon { display: none; }
+[data-theme="dark"] .icon-sun { display: none; }
+[data-theme="dark"] .icon-moon { display: block; }
+
+/* HERO — two col: content + geometric accent */
+.hero { padding: 100px 0 0; display: grid; grid-template-columns: 1fr 200px; max-width: 100%; }
+.hero-main { padding: 48px 3rem 48px; display: flex; flex-direction: column; justify-content: center; max-width: 900px; }
+.hero-top {}
+.hero-kicker { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.75rem; font-weight: 400; }
+.hero-title { font-size: clamp(2.6rem, 4.5vw, 4rem); font-weight: 300; letter-spacing: -0.03em; line-height: 1.08; color: var(--text); margin-bottom: 2rem; }
+.hero-title strong { font-weight: 700; display: block; }
+.hero-bio { font-size: 0.975rem; color: var(--text-2); line-height: 1.8; max-width: 52ch; margin-bottom: 1.5rem; }
+.hero-known { display: inline-flex; align-items: baseline; gap: 0.5rem; font-size: 0.825rem; color: var(--accent-text); background: var(--accent-bg); padding: 0.55rem 0.875rem; border-radius: 4px; line-height: 1.5; }
+.hero-known span { font-weight: 600; white-space: nowrap; }
+.hero-bottom { display: flex; gap: 3rem; padding-top: 2.5rem; border-top: 1px solid var(--border); }
+.hero-stat {}
+.stat-n { font-size: 1.75rem; font-weight: 700; color: var(--text); line-height: 1; letter-spacing: -0.03em; }
+.stat-l { font-size: 0.675rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-3); margin-top: 0.3rem; }
+
+/* GEOMETRIC ACCENT COLUMN */
+.hero-accent { background: var(--accent-col); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 2rem 1.5rem; transition: var(--t); }
+.geo-ring { width: 88px; height: 88px; border-radius: 50%; border: 1.5px solid rgba(74,45,78,0.25); display: flex; align-items: center; justify-content: center; transition: var(--t); }
+[data-theme="dark"] .geo-ring { border-color: rgba(155,114,160,0.3); }
+.geo-dot { width: 52px; height: 52px; background: var(--accent); border-radius: 50%; transition: var(--t); }
+.geo-line { width: 1.5px; height: 40px; background: var(--border-mid); }
+.geo-sq { width: 60px; height: 60px; background: var(--accent); border-radius: 5px; transform: rotate(18deg); transition: var(--t); opacity: 0.45; }
+.geo-line2 { width: 32px; height: 1.5px; background: var(--border-mid); }
+.geo-tri { width: 0; height: 0; border-left: 18px solid transparent; border-right: 18px solid transparent; border-bottom: 31px solid var(--accent-bg); transition: var(--t); }
+
+/* WORK */
+.section-work { padding: 80px 3rem; border-top: 1px solid var(--border); max-width: 1100px; margin: 0 auto; }
+.section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 2.5rem; }
+.section-label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); }
+.section-count { font-size: 0.7rem; letter-spacing: 0.08em; color: var(--text-3); font-family: 'Sora', monospace; }
+
+.cs-group { margin-bottom: 3rem; }
+.cs-group:last-child { margin-bottom: 0; }
+.cs-group-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 0.875rem; border-bottom: 1px solid var(--border); }
+.cs-group-label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); }
+.cs-group-desc { font-size: 0.75rem; color: var(--text-3); font-style: italic; }
+.cs-when { font-size: 0.7rem; color: var(--text-3); letter-spacing: 0.04em; margin-bottom: 0.35rem; }
+
+.arc-intro { max-width: 1100px; margin: 0 auto; padding: 0 3rem 48px; }
+.arc-intro p { font-size: 0.875rem; color: var(--text-2); line-height: 1.8; max-width: 64ch; }
+.arc-para { font-size: 0.875rem; color: var(--text-2); line-height: 1.8; max-width: 64ch; margin-bottom: 2.5rem; }
+
+.cs-list { display: flex; flex-direction: column; }
+.cs-row {
+  display: grid; grid-template-columns: 72px 1fr auto;
+  align-items: start; padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  text-decoration: none; color: inherit;
+  transition: background 0.15s; cursor: pointer;
+  margin: 0 -1rem; padding-left: 1rem; padding-right: 1rem;
+  border-radius: 3px; position: relative;
+}
+.cs-row:first-child { border-top: 1px solid var(--border); }
+.cs-row:hover { background: var(--bg-subtle); }
+.cs-row:hover .cs-arrow { opacity: 1; transform: translateX(0); }
+
+.cs-ghost { font-size: 5rem; font-weight: 700; color: var(--accent-ghost); line-height: 1; letter-spacing: -0.04em; margin-top: -0.5rem; transition: color 0.15s; user-select: none; }
+.cs-row:hover .cs-ghost { color: rgba(74,45,78,0.12); }
+[data-theme="dark"] .cs-row:hover .cs-ghost { color: rgba(155,114,160,0.16); }
+
+.cs-body { display: flex; flex-direction: column; gap: 0.6rem; }
+.cs-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.tag { font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-text); background: var(--accent-bg); padding: 0.18rem 0.5rem; border-radius: 3px; font-weight: 400; transition: var(--t); }
+.tag-lock { font-size: 0.65rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3); background: var(--bg-inset); border: 1px solid var(--border-mid); padding: 0.16rem 0.5rem; border-radius: 3px; font-weight: 400; display: inline-flex; align-items: center; gap: 0.3rem; transition: var(--t); }
+.cs-title { font-size: 1.2rem; font-weight: 600; letter-spacing: -0.02em; color: var(--text); line-height: 1.25; }
+.cs-desc { font-size: 0.875rem; color: var(--text-2); line-height: 1.75; max-width: 56ch; }
+
+.cs-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 0.6rem; padding-top: 0.25rem; }
+.cs-role { font-size: 0.7rem; color: var(--text-3); letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+.cs-arrow { font-size: 0.875rem; color: var(--accent); opacity: 0; transform: translateX(-5px); transition: opacity 0.15s, transform 0.15s; }
+
+/* ABOUT */
+.section-about { padding: 80px 3rem; border-top: 1px solid var(--border); max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 200px 1fr; gap: 6rem; align-items: start; }
+.about-label-col { position: sticky; top: 80px; }
+.about-section-label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); }
+.about-headline { font-size: clamp(1.4rem, 2.2vw, 1.8rem); font-weight: 500; letter-spacing: -0.025em; line-height: 1.3; color: var(--text); margin-bottom: 1.5rem; }
+.about-text { font-size: 0.95rem; color: var(--text-2); line-height: 1.85; margin-bottom: 1.25rem; max-width: 56ch; }
+.about-known { display: inline-flex; align-items: baseline; gap: 0.5rem; font-size: 0.85rem; color: var(--accent-text); background: var(--accent-bg); padding: 0.65rem 1rem; border-radius: 4px; line-height: 1.55; margin-bottom: 3rem; max-width: 46ch; transition: var(--t); }
+.about-known span { font-weight: 600; white-space: nowrap; }
+
+.principles { border-top: 1px solid var(--border); }
+.principle { display: grid; grid-template-columns: 2rem 1fr; gap: 1.25rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
+.principle-n { font-size: 0.7rem; color: var(--accent); font-weight: 500; padding-top: 0.1rem; letter-spacing: 0.04em; }
+.principle-title { font-size: 0.875rem; font-weight: 600; color: var(--text); margin-bottom: 0.35rem; letter-spacing: -0.01em; }
+.principle-desc { font-size: 0.825rem; color: var(--text-2); line-height: 1.7; }
+
+/* CONTACT */
+.section-contact { padding: 80px 3rem 100px; border-top: 1px solid var(--border); max-width: 1100px; margin: 0 auto; }
+.contact-headline { font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 300; letter-spacing: -0.03em; line-height: 1.15; color: var(--text); margin-bottom: 0.75rem; }
+.contact-headline strong { font-weight: 700; }
+.contact-sub { font-size: 0.875rem; color: var(--text-3); margin-bottom: 2.5rem; }
+.contact-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; font-weight: 400; color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-bg); padding-bottom: 0.2rem; transition: border-color 0.15s, color 0.15s; }
+.contact-link:hover { border-color: var(--accent); }
+
+.footer-wrap { background: var(--bg); border-top: 1px solid var(--border); transition: var(--t); }
+footer { padding: 1.5rem 3rem; max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+footer span { font-size: 0.75rem; color: var(--text-3); letter-spacing: 0.04em; }
+
+.fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 900px) {
+  nav { padding: 0 1.5rem; }
+  .hero { grid-template-columns: 1fr; }
+  .hero-accent { display: none; }
+  .hero-main { padding: 40px 1.5rem 60px; }
+  .section-work, .section-about, .section-contact { padding: 60px 1.5rem; }
+  .section-about { grid-template-columns: 1fr; gap: 2.5rem; }
+  .about-label-col { position: static; }
+  .cs-row { grid-template-columns: 56px 1fr; }
+  .cs-meta { display: none; }
+  .cs-ghost { font-size: 3.5rem; }
+  footer { padding: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-name">Rachel Truong</a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeBtn" aria-label="Toggle theme">
+      <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-main">
+    <div class="hero-top">
+      <p class="hero-kicker fade-in">Product Designer · 10 years</p>
+      <h1 class="hero-title fade-in">
+        Clarity before<br>
+        <strong>it becomes costly.</strong>
+      </h1>
+      <p class="hero-bio fade-in">I design complex, data-heavy platforms — specializing in bringing structure to ambiguous problem spaces, building durable foundations, and guiding teams through complexity without losing sight of trust and usability.</p>
+      <div class="hero-known fade-in">
+        <span>Known for:</span> bringing clarity to complex problems before they become expensive ones.
+      </div>
+    </div>
+
+  </div>
+  <div class="hero-accent">
+    <div class="geo-ring"><div class="geo-dot"></div></div>
+    <div class="geo-line"></div>
+    <div class="geo-sq"></div>
+    <div class="geo-line2"></div>
+    <div class="geo-tri"></div>
+  </div>
+</section>
+
+<div id="work"></div>
+<section class="section-work">
+  <div class="section-header">
+    <span class="section-label">Selected work</span>
+    <span class="section-count">05 case studies</span>
+  </div>
+  <p class="arc-para fade-in">These five projects span 2023 to 2026 — a period when AI moved from background noise to the center of enterprise software. Each one reflects a different moment in that shift: a product built before AI was in the room, systems designed to introduce AI without breaking trust, and most recently, products where AI is the core workflow. The design challenge at every stage was the same — figuring out what users were actually ready to trust AI with, and building for that honestly.</p>
+
+  <div class="cs-group">
+    <div class="cs-group-header">
+      <span class="cs-group-label">How I design — craft, tools, judgment</span>
+      <span class="cs-group-desc">Solo IC</span>
+    </div>
+    <div class="cs-list">
+      <a href="ai-deal-create.html" class="cs-row fade-in">
+        <div class="cs-ghost">01</div>
+        <div class="cs-body">
+          <div class="cs-tags">
+            <span class="tag">AI-assisted design</span>
+            <span class="tag">Mental model reframe</span>
+            <span class="tag">Cross-asset alignment</span>
+            <span class="tag-lock"><svg width="9" height="10" viewBox="0 0 9 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4.5" width="7" height="5" rx="1"/><path d="M3 4.5V3a1.5 1.5 0 0 1 3 0v1.5"/></svg>Password protected</span>
+          </div>
+          <h3 class="cs-title">AI Deal Create</h3>
+          <p class="cs-when">Mid 2026 · Phase 1 release Sep 2027 · AI is the product</p>
+          <p class="cs-desc">Using AI as a thinking partner, not a production tool — reframing how users create deals from extracted document data, then influencing the same approach across the entire enterprise.</p>
+        </div>
+        <div class="cs-meta">
+          <span class="cs-role">Senior IC</span>
+          <span class="cs-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="buyside-order-entry.html" class="cs-row fade-in">
+        <div class="cs-ghost">02</div>
+        <div class="cs-body">
+          <div class="cs-tags">
+            <span class="tag">Workflow design</span>
+            <span class="tag">AI prototyping</span>
+            <span class="tag">Dual audience</span>
+            <span class="tag-lock"><svg width="9" height="10" viewBox="0 0 9 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4.5" width="7" height="5" rx="1"/><path d="M3 4.5V3a1.5 1.5 0 0 1 3 0v1.5"/></svg>Password protected</span>
+          </div>
+          <h3 class="cs-title">Buyside Order Entry</h3>
+          <p class="cs-when">Early 2026 · Release 2027 · AI in product + process</p>
+          <p class="cs-desc">Digitizing a manual, relationship-dependent order entry workflow for two audiences with opposing needs — without making automation feel like a threat to either side.</p>
+        </div>
+        <div class="cs-meta">
+          <span class="cs-role">Senior IC</span>
+          <span class="cs-arrow">→</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="cs-group">
+    <div class="cs-group-header">
+      <span class="cs-group-label">How I lead — direction, systems, teams</span>
+      <span class="cs-group-desc">Design Lead</span>
+    </div>
+    <div class="cs-list">
+      <a href="adi.html" class="cs-row fade-in">
+        <div class="cs-ghost">03</div>
+        <div class="cs-body">
+          <div class="cs-tags">
+            <span class="tag">Automation</span>
+            <span class="tag">Trust</span>
+            <span class="tag">Multi-phase</span>
+            <span class="tag-lock"><svg width="9" height="10" viewBox="0 0 9 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4.5" width="7" height="5" rx="1"/><path d="M3 4.5V3a1.5 1.5 0 0 1 3 0v1.5"/></svg>Password protected</span>
+          </div>
+          <h3 class="cs-title">Automated Data Ingestion</h3>
+          <p class="cs-when">2024–early 2025 · AI entering the product for the first time · Project ongoing</p>
+          <p class="cs-desc">Introducing AI-driven automation into a trust-sensitive financial platform without eroding the system it was built on. Multi-phase design leadership across collection, extraction, mapping, and submission.</p>
+        </div>
+        <div class="cs-meta">
+          <span class="cs-role">Design Lead</span>
+          <span class="cs-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="formula-builder.html" class="cs-row fade-in">
+        <div class="cs-ghost">04</div>
+        <div class="cs-body">
+          <div class="cs-tags">
+            <span class="tag">Systems design</span>
+            <span class="tag">Governance</span>
+            <span class="tag">Scoping</span>
+            <span class="tag-lock"><svg width="9" height="10" viewBox="0 0 9 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4.5" width="7" height="5" rx="1"/><path d="M3 4.5V3a1.5 1.5 0 0 1 3 0v1.5"/></svg>Password protected</span>
+          </div>
+          <h3 class="cs-title">Formula Builder</h3>
+          <p class="cs-when">Mid 2024–2025 · AI-readiness shaped the mandate · Dev implementation ongoing</p>
+          <p class="cs-desc">Rebuilding a fragile, platform-wide calculation engine to support sophisticated analytics — without breaking everything already depending on it.</p>
+        </div>
+        <div class="cs-meta">
+          <span class="cs-role">Design Lead</span>
+          <span class="cs-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="peer-comparables.html" class="cs-row fade-in">
+        <div class="cs-ghost">05</div>
+        <div class="cs-body">
+          <div class="cs-tags">
+            <span class="tag">Direction-setting</span>
+            <span class="tag">Team leadership</span>
+            <span class="tag">Post-merger</span>
+            <span class="tag-lock"><svg width="9" height="10" viewBox="0 0 9 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4.5" width="7" height="5" rx="1"/><path d="M3 4.5V3a1.5 1.5 0 0 1 3 0v1.5"/></svg>Password protected</span>
+          </div>
+          <h3 class="cs-title">Peer Comparables</h3>
+          <p class="cs-when">Early 2023 · Pre-AI integration era</p>
+          <p class="cs-desc">Turning a vague post-merger synergy charter into a user-driven product — while influencing system-level decisions that shaped how future work at iLEVEL could be built.</p>
+        </div>
+        <div class="cs-meta">
+          <span class="cs-role">Design Lead</span>
+          <span class="cs-arrow">→</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section-about" id="about">
+  <div class="about-label-col fade-in">
+    <p class="about-section-label">About</p>
+  </div>
+  <div class="about-body-col">
+    <h2 class="about-headline fade-in">Designing where complexity meets consequence.</h2>
+    <p class="about-text fade-in">I'm a product designer with 10 years of experience designing complex, data-heavy platforms. I specialize in shaping direction in ambiguous problem spaces, building durable foundations, and guiding teams through complexity without losing sight of trust and usability.</p>
+    <p class="about-text fade-in">Much of the most important design work happens before a single screen is created — especially when automation and evolving technologies introduce new layers of uncertainty.</p>
+    <div class="about-known fade-in">
+      <span>Known for:</span> bringing clarity to complex problems before they become expensive ones.
+    </div>
+    <div class="principles fade-in">
+      <div class="principle">
+        <span class="principle-n">01</span>
+        <div><p class="principle-title">Architectural clarity prevents fragility</p><p class="principle-desc">The structure of a system matters as much as the surface. Good design makes underlying logic legible — to users, engineers, and future decisions.</p></div>
+      </div>
+      <div class="principle">
+        <span class="principle-n">02</span>
+        <div><p class="principle-title">Constraints are design inputs</p><p class="principle-desc">Platform limitations, engineering realities, and business constraints aren't obstacles to work around — they shape better systems when taken seriously.</p></div>
+      </div>
+      <div class="principle">
+        <span class="principle-n">03</span>
+        <div><p class="principle-title">Stated desires must be tested against reality</p><p class="principle-desc">What users say they want and what creates value for them are often different things. Discovery only ends when assumptions are stress-tested.</p></div>
+      </div>
+      <div class="principle">
+        <span class="principle-n">04</span>
+        <div><p class="principle-title">Design for change, not just v1</p><p class="principle-desc">In fast-moving technical environments, durability matters more than completeness. The best systems reduce the blast radius of future decisions.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-contact" id="contact">
+  <h2 class="contact-headline fade-in">Let's work on<br><strong>something complex.</strong></h2>
+  <p class="contact-sub fade-in">Open to senior IC and lead roles in product design.</p>
+  <a href="mailto:rachel@youremail.com" class="contact-link fade-in">rachel@youremail.com →</a>
+</section>
+
+<div class="footer-wrap">
+  <footer>
+    <span>© 2026 Rachel Truong</span>
+    <span>Product Designer</span>
+  </footer>
+</div>
+
+<script>
+  const html = document.documentElement;
+  const btn = document.getElementById('themeBtn');
+  const saved = localStorage.getItem('theme');
+  if (saved) html.setAttribute('data-theme', saved);
+  btn.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 60); obs.unobserve(e.target); }});
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
