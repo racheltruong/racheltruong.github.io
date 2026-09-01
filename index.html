@@ -118,17 +118,16 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; a
 .cs-arrow { font-size: 0.875rem; color: var(--accent); opacity: 0; transform: translateX(-5px); transition: opacity 0.15s, transform 0.15s; }
 
 /* ABOUT */
-.section-about { padding: 80px 3rem; border-top: 1px solid var(--border); max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 200px 1fr; gap: 6rem; align-items: start; }
-.about-label-col { position: sticky; top: 80px; }
-.about-section-label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); }
+.section-about { padding: 80px 3rem; border-top: 1px solid var(--border); max-width: 1100px; margin: 0 auto; }
+.about-section-label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); margin-bottom: 2rem; }
+.about-cols { display: grid; grid-template-columns: 280px 1fr; gap: 5rem; align-items: start; }
+.about-photo-col { border-radius: 6px; overflow: hidden; position: sticky; top: 80px; }
+.about-body-col { display: flex; flex-direction: column; gap: 0; }
 .about-headline { font-family: var(--serif); font-size: clamp(1.4rem, 2.2vw, 1.8rem); font-weight: 400; letter-spacing: -0.01em; line-height: 1.3; color: var(--text); margin-bottom: 1.5rem; }
 .about-text { font-size: 0.95rem; color: var(--text-2); line-height: 1.85; margin-bottom: 1.25rem; max-width: 56ch; }
-.about-known { display: inline-flex; align-items: baseline; gap: 0.5rem; font-size: 0.85rem; color: var(--accent-text); background: var(--accent-bg); padding: 0.65rem 1rem; border-radius: 4px; line-height: 1.55; margin-bottom: 3rem; max-width: 46ch; transition: var(--t); }
+.about-known { display: inline-flex; align-items: baseline; gap: 0.5rem; font-size: 0.85rem; color: var(--accent-text); background: var(--accent-bg); padding: 0.65rem 1rem; border-radius: 4px; line-height: 1.55; margin-bottom: 2rem; max-width: 46ch; transition: var(--t); }
 .about-known span { font-weight: 600; white-space: nowrap; }
-.about-personal { display: grid; grid-template-columns: 180px 1fr; gap: 2rem; align-items: start; padding-top: 2.5rem; border-top: 1px solid var(--border); margin-top: 2.5rem; }
-.about-photo-placeholder { border-radius: 6px; aspect-ratio: 3/4; overflow: hidden; }
-.about-photo-label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); }
-.about-photo-desc { font-size: 0.75rem; color: var(--text-3); text-align: center; line-height: 1.5; }
+.about-photo-full { margin-top: 0; border-radius: 6px; overflow: hidden; }
 
 .principles { border-top: 1px solid var(--border); }
 .principle { display: grid; grid-template-columns: 2rem 1fr; gap: 1.25rem; padding: 1.5rem 0; border-bottom: 1px solid var(--border); }
@@ -180,8 +179,9 @@ footer span { font-size: 0.75rem; color: var(--text-3); letter-spacing: 0.04em; 
   .tag, .tag-lock { font-size: 0.6rem; padding: 0.15rem 0.4rem; }
   .cs-meta { display: none; }
 
-  .section-about { padding: 48px 1.5rem; grid-template-columns: 1fr; gap: 1.5rem; }
-  .about-label-col { position: static; }
+  .section-about { padding: 48px 1.5rem; }
+  .about-cols { grid-template-columns: 1fr; gap: 2rem; }
+  .about-photo-col { position: static; max-height: 280px; }
   .about-headline { font-size: 1.3rem; }
   .about-text { font-size: 0.875rem; }
   .about-known { font-size: 0.8rem; }
@@ -234,8 +234,8 @@ footer span { font-size: 0.75rem; color: var(--text-3); letter-spacing: 0.04em; 
     </div>
 
   </div>
- <div class="hero-accent" style="background:transparent;">
-    <img src="thread-squiggle.png" alt="" style="width:100%;height:100%;object-fit:cover;display:block;"/>
+  <div class="hero-accent">
+    <img src="thread-squiggle.png" alt="" style="width:100%;height:100%;object-fit:contain;display:block;mix-blend-mode:multiply;padding:1rem 0;"/>
   </div>
 </section>
 
@@ -360,29 +360,24 @@ footer span { font-size: 0.75rem; color: var(--text-3); letter-spacing: 0.04em; 
 </section>
 
 <section class="section-about" id="about">
-  <div class="about-label-col fade-in">
-    <p class="about-section-label">About</p>
-  </div>
-  <div class="about-body-col">
-    <h2 class="about-headline fade-in">Designing where complexity meets consequence.</h2>
-    <p class="about-text fade-in">I do my best work when the problem space is still open — before the solution has been assumed and the team is heads-down making it real.</p>
-    <p class="about-text fade-in">Design work has always pulled toward execution. AI has made that pull stronger. Someone has to keep pulling back toward the problem, making sure the work stays connected to the right question, not just the immediate one. That role matters more now, not less.</p>
-    <div class="about-known fade-in">
-      <span>What I'm known for:</span> finding the few framing decisions that make everything else easier before the team is too deep to change it.
+  <p class="about-section-label fade-in">About</p>
+  <div class="about-cols">
+    <div class="about-photo-col fade-in">
+      <img src="familyphoto.png" alt="Rachel with her family" style="width:100%;height:100%;object-fit:cover;object-position:center 15%;border-radius:6px;display:block;"/>
     </div>
-
-    <div class="about-personal fade-in">
-      <div class="about-photo-placeholder">
-        <img src="family-photo.png" alt="Rachel with her family" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:6px;display:block;"/>
+    <div class="about-body-col">
+      <p class="about-text fade-in">I do my best work before anyone's committed to an answer. Once the team is heads-down building, it's hard to surface and ask whether we're solving the right thing. So I try to get there first.</p>
+      <p class="about-text fade-in">There's always pressure to move fast and ship. AI has made that pressure harder to resist. I've found that someone has to stay oriented to the actual question underneath the work, not just the immediate task. That's usually been me.</p>
+      <p class="about-text fade-in">Becoming a mom made that instinct even stronger. These days, I think a lot about creating the right conditions -- for a product or a child -- so they can grow in ways I didn't plan for. I can't control every outcome, but I can build a foundation solid enough that they have room to learn, adapt, and become something even better than I imagined.</p>
+      <div class="about-known fade-in">
+        <span>What I'm known for:</span> finding the few framing decisions that make everything else easier before the team is too deep to change it.
       </div>
-      <p class="about-text" style="margin-top:0;">Being a mom has changed how I design. These days, I think a lot about creating the right conditions — for a product, for a child — so they can grow in ways I didn't plan for. I can't control every outcome, but I can build a foundation strong enough that they have the room to learn, adapt, and become something even better than I imagined.</p>
     </div>
   </div>
 </section>
 
 <section class="section-contact" id="contact">
-  <h2 class="contact-headline fade-in">Let's work on<br><strong>something complex.</strong></h2>
-  <p class="contact-sub fade-in">Open to senior IC and lead roles in product design.</p>
+  <h2 class="contact-headline fade-in">Get in touch.</h2>
   <a href="mailto:racheltruong.design@gmail.com" class="contact-link fade-in">racheltruong.design@gmail.com →</a>
 </section>
 
